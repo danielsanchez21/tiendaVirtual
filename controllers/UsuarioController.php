@@ -16,11 +16,12 @@ class UsuarioController extends Controller {
         }
 
         $usuario->save();
-        return json_encode(['message' => 'Usuario creado correctamente']);
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return ['message' => 'Usuario creado correctamente'];
     }
 
     public function actionListarusuarios() {
-        $lista = Usuario::find()->all();
-        return json_encode($lista);
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return Usuario::find()->all();
     }
 }

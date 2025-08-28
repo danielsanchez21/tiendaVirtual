@@ -14,11 +14,13 @@ class RolController extends Controller {
         }
 
         $rol->save();
-        return json_encode(['message' => 'Rol creado correctamente']);
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return ['message' => 'Rol creado correctamente'];
     }
 
     public function actionListarroles() {
-        $lista = Rol::find()->all();
-        return json_encode($lista);
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return  Rol::find()->all();
+
     }
 }

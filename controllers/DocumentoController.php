@@ -2,6 +2,7 @@
 
 use yii\web\Controller;
 use app\models\Documento;
+use yii\web\Response;
 
 class DocumentoController extends Controller {
 
@@ -15,11 +16,12 @@ class DocumentoController extends Controller {
         }
 
         $documento->save();
-        return json_encode(['message' => 'Documento creado correctamente']);
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return ['message' => 'Tipo documento creada correctamente'];
     }
 
     public function actionListarDocumentos() {
-        $lista = Documento::find()->all();
-        return json_encode($lista);
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return Documento::find()->all();
     }
 }

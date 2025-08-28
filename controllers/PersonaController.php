@@ -19,11 +19,13 @@ class PersonaController extends Controller {
         }
 
         $persona->save();
-        return json_encode(['message' => 'Persona creada correctamente']);
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return ['message' => 'Persona creada correctamente'];
     }
 
     public function actionListarpersonas() {
         $lista = Persona::find()->all();
-        return json_encode($lista);
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return $lista;
     }
 }

@@ -33,6 +33,7 @@ class ProductoController extends Controller
     public function actionListarproductos()
     {
        $lista = Producto::find()->all();
+        \Yii::$app->response->format = Response::FORMAT_JSON;
         return $lista;
     }
 }
