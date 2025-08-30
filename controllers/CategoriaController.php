@@ -15,7 +15,7 @@ class CategoriaController extends Controller
         $categoria = new Categoria();
         $categoria->nom_categoria = 'ff';
         $categoria->des_categoria = 'ff';
-        $categoria->abreviatura = 'cc';
+        $categoria->abreviatura = 'c';
 
         if (!$categoria->validate()) {
             throw new \Exception('Error al crear categoría');
