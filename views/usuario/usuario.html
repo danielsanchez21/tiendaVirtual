@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="usuario-form">
+
+    <form id="w0" action="/tiendavirtualbase/web/index.php?r=usuario/create" method="post">
+        <input type="hidden" name="_csrf" value="2Utk7QtAgU0fSkT9_W5csJg3Lb-8z3ZL4yuRa1iiXLSNITW4fhrUL1c-Ba6UXjPX1n5a8s_7MgKMGNlfbNEZ2Q==">
+        <div class="form-group field-usuario-nombre">
+            <label class="control-label" for="usuario-nombre">Nombre</label>
+            <input type="text" id="usuario-nombre" class="form-control" name="Usuario[nombre]" maxlength="50">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-usuario-correo">
+            <label class="control-label" for="usuario-correo">Correo</label>
+            <input type="email" id="usuario-correo" class="form-control" name="Usuario[correo]">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-usuario-contraseña">
+            <label class="control-label" for="usuario-contraseña">Contraseña</label>
+            <input type="password" id="usuario-contraseña" class="form-control" name="Usuario[contraseña]" maxlength="255">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Guardar</button>    </div>
+
+    </form>
+</div>
+</body>
+</html>
