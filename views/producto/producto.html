@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="producto-form">
+
+    <form id="w0" action="/tiendavirtualbase/web/index.php?r=producto/create" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="SQIAtOLchGLiIHHZiTED78XBx0gylWMOwQPGwUk8sUIdaFHhl4bRAKpUMIrgAWyIi4iwBUGhJ0euMI71fU_0Lw==">
+        <div class="form-group field-producto-nombre required">
+            <label class="control-label" for="producto-nombre">Nombre</label>
+            <input type="text" id="producto-nombre" class="form-control" name="Producto[nombre]" maxlength="60" aria-required="true">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-producto-descrip_producto">
+            <label class="control-label" for="producto-descrip_producto">Descrip Producto</label>
+            <input type="text" id="producto-descrip_producto" class="form-control" name="Producto[descrip_producto]" maxlength="100">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-producto-est_producto">
+            <label class="control-label" for="producto-est_producto">Est Producto</label>
+            <select id="producto-est_producto" class="form-control" name="Producto[est_producto]">
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+            </select>
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-producto-stock required">
+            <label class="control-label" for="producto-stock">Stock</label>
+            <input type="number" id="producto-stock" class="form-control" name="Producto[stock]" aria-required="true">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-producto-precio_costo required">
+            <label class="control-label" for="producto-precio_costo">Precio Costo</label>
+            <input type="number" id="producto-precio_costo" class="form-control" name="Producto[precio_costo]" step="0.01" aria-required="true">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-producto-precio_venta required">
+            <label class="control-label" for="producto-precio_venta">Precio Venta</label>
+            <input type="number" id="producto-precio_venta" class="form-control" name="Producto[precio_venta]" step="0.01" aria-required="true">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-producto-fk_categoria">
+            <label class="control-label" for="producto-fk_categoria">Fk Categoria</label>
+            <input type="text" id="producto-fk_categoria" class="form-control" name="Producto[fk_categoria]">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-producto-imagen">
+            <label class="control-label" for="producto-imagen">Imagen</label>
+            <input type="hidden" name="Producto[imagen]" value=""><input type="file" id="producto-imagen" name="Producto[imagen]">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Guardar</button>    </div>
+
+    </form>
+</div>
+</body>
+</html>

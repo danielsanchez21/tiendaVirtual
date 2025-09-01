@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="factura-form">
+
+    <form id="w0" action="/tiendavirtualbase/web/index.php?r=factura/create" method="post">
+        <input type="hidden" name="_csrf" value="5jbFHb0XOT5p7o_tWQT6THS8z_pAP7QBY5GwNgcn3aOyXJRIyE1sXCGazr4wNJUrOvW4tzML8EgMovgCM1SYzg==">
+        <div class="form-group field-factura-valor_factura required">
+            <label class="control-label" for="factura-valor_factura">Valor Factura</label>
+            <input type="number" id="factura-valor_factura" class="form-control" name="Factura[valor_factura]" step="0.01" aria-required="true">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-factura-fk_persona required">
+            <label class="control-label" for="factura-fk_persona">Fk Persona</label>
+            <input type="text" id="factura-fk_persona" class="form-control" name="Factura[fk_persona]" aria-required="true">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-factura-fk_usuario required">
+            <label class="control-label" for="factura-fk_usuario">Fk Usuario</label>
+            <input type="text" id="factura-fk_usuario" class="form-control" name="Factura[fk_usuario]" aria-required="true">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-factura-estado_factura required">
+            <label class="control-label" for="factura-estado_factura">Estado Factura</label>
+            <input type="text" id="factura-estado_factura" class="form-control" name="Factura[estado_factura]" maxlength="1" aria-required="true">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Guardar</button>    </div>
+
+    </form>
+</div>
+</body>
+</html>

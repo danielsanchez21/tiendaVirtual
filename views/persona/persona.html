@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="persona-form">
+
+    <form id="w0" action="/tiendavirtualbase/web/index.php?r=persona/create" method="post">
+        <input type="hidden" name="_csrf" value="thdNekmUEIl1zhH9L9EH1dRdx83C3tUPFyk_XYI-mYzifRwvPM5F6z26UK5G4WiymhSwgLHqkUZ4Gndptk3c4Q==">
+        <div class="form-group field-persona-nombre">
+            <label class="control-label" for="persona-nombre">Nombre</label>
+            <input type="text" id="persona-nombre" class="form-control" name="Persona[nombre]" maxlength="45">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-persona-apellido">
+            <label class="control-label" for="persona-apellido">Apellido</label>
+            <input type="text" id="persona-apellido" class="form-control" name="Persona[apellido]" maxlength="45">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-persona-id_documento required">
+            <label class="control-label" for="persona-id_documento">Id Documento</label>
+            <input type="text" id="persona-id_documento" class="form-control" name="Persona[id_documento]" aria-required="true">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-persona-telefono">
+            <label class="control-label" for="persona-telefono">Telefono</label>
+            <input type="text" id="persona-telefono" class="form-control" name="Persona[telefono]" maxlength="15">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-persona-direccion">
+            <label class="control-label" for="persona-direccion">Direccion</label>
+            <input type="text" id="persona-direccion" class="form-control" name="Persona[direccion]" maxlength="100">
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group field-persona-genero">
+            <label class="control-label" for="persona-genero">Genero</label>
+            <select id="persona-genero" class="form-control" name="Persona[genero]">
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+                <option value="O">Otro</option>
+            </select>
+
+            <div class="help-block"></div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Guardar</button>    </div>
+
+    </form>
+</div>
+</body>
+</html>
