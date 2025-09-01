@@ -14,6 +14,7 @@ use Yii;
  * @property string|null $telefono
  * @property string|null $direccion
  * @property string|null $genero
+ * @property string $num_documento
  *
  * @property Documento $documento
  * @property Factura[] $facturas
@@ -37,12 +38,13 @@ class Persona extends \yii\db\ActiveRecord
     {
         return [
             [['nombre', 'apellido', 'telefono', 'direccion', 'genero'], 'default', 'value' => null],
-            [['id_documento'], 'required'],
+            [['id_documento', 'num_documento'], 'required'],
             [['id_documento'], 'integer'],
             [['nombre', 'apellido'], 'string', 'max' => 45],
             [['telefono'], 'string', 'max' => 15],
             [['direccion'], 'string', 'max' => 100],
             [['genero'], 'string', 'max' => 2],
+            [['num_documento'], 'string', 'max' => 25],
             [['id_documento'], 'exist', 'skipOnError' => true, 'targetClass' => Documento::class, 'targetAttribute' => ['id_documento' => 'id_documento']],
         ];
     }
@@ -60,6 +62,7 @@ class Persona extends \yii\db\ActiveRecord
             'telefono' => 'Telefono',
             'direccion' => 'Direccion',
             'genero' => 'Genero',
+            'num_documento' => 'Num Documento',
         ];
     }
 
