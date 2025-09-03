@@ -13,9 +13,9 @@ class CategoriaController extends Controller
     public function actionCrearcategoria()
     {
         $categoria = new Categoria();
-        $categoria->nom_categoria = 'ff';
-        $categoria->des_categoria = 'ff';
-        $categoria->abreviatura = 'c';
+        $categoria->nom_categoria = filter_input(INPUT_POST,"categoria-nom_categoria", FILTER_SANITIZE_STRING);
+        $categoria->des_categoria = filter_input(INPUT_POST,"categoria-des_categoria", FILTER_SANITIZE_STRING);
+        $categoria->abreviatura = filter_input(INPUT_POST,"categoria-abreviatura", FILTER_SANITIZE_STRING);
 
         if (!$categoria->validate()) {
             throw new \Exception('Error al crear categoría');
@@ -24,7 +24,7 @@ class CategoriaController extends Controller
         $categoria->save();
 
         \Yii::$app->response->format = Response::FORMAT_JSON;
-        return ['message' => 'Categoría creada correctamente'];
+        return ['success'=>true,'message' => 'Categoría creada correctamente'];
     }
 
     public function actionListarcategorias()
