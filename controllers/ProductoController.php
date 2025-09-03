@@ -14,7 +14,8 @@ class ProductoController extends Controller
 
     public function actionCrearproducto()
     {
-        $producto = new Producto();
+        $id =filter_input(INPUT_POST, 'pdt_id', FILTER_SANITIZE_NUMBER_INT);
+        $producto = empty($id) ? new Producto() : Producto::findOne($id);
         $producto->nombre =filter_input(INPUT_POST, 'nombreproducto', FILTER_SANITIZE_STRING);
         $producto->descrip_producto = filter_input(INPUT_POST, 'descripcion', FILTER_SANITIZE_STRING);
         $producto->stock = filter_input(INPUT_POST, 'existencias', FILTER_SANITIZE_NUMBER_INT);;
@@ -46,25 +47,33 @@ class ProductoController extends Controller
             array('db' => 'stock', 'dt' => 2),
             array('db' => 'precio_costo', 'dt' => 3),
             array('db' => 'precio_costo', 'dt' => 4),
-            array('db' => 'id_Producto', 'dt' => 5,
+            array(
+                'db' => 'est_producto',
+                'dt' => 5,
                 'formatter' => function ($d, $row) {
+                    // Botón Editar
                     $buts = '<button type="button" id="editar_plan_' . $row['id_Producto'] . '" 
-                    title="editar" data-toggle="modal" data-target="#modal-actualizar"
-                    class="mfb-component__button--child tooltipedit bg-blue waves waves-effect"
-                    data-id="' . $row['id_Producto'] . '"></button>';
+                    title="Editar" data-bs-toggle="modal" data-bs-target="#modalProducto"
+                    class="btn btn-sm btn-primary"
+                    data-id="' . $row['id_Producto'] . '">
+                    Editar
+                 </button> ';
 
+                    // Botón Activar/Desactivar
                     if ($d == 1) {
-                        $buts .= "<button id='estado_desactivar_plan_" . $row['id_Producto'] . "' 
-                        data-id='" . $row['id_Producto'] . "' data-estado='0' 
-                        class='mfb-component__button--child bg-green waves waves-effect' 
-                        title='Estado'>
-                        </button>";
+                        $buts .= '<button id="estado_desactivar_pdt_' . $row['id_Producto'] . '" 
+                        data-id="' . $row['id_Producto'] . '" data-estado="0" 
+                        class="btn btn-sm btn-success"
+                        title="Desactivar">
+                        Desactivar
+                      </button>';
                     } else {
-                        $buts .= "<button id='estado_activar_plan_" . $row['id_Producto'] . "' 
-                        data-id='" . $row['id_Producto'] . "' data-estado='1' 
-                        class='mfb-component__button--child bg-red waves waves-effect' 
-                        title='Estado'>
-                        </button>";
+                        $buts .= '<button id="estado_activar_pdt_' . $row['id_Producto'] . '" 
+                        data-id="' . $row['id_Producto'] . '" data-estado="1" 
+                        class="btn btn-sm btn-danger"
+                        title="Activar">
+                        Activar
+                      </button>';
                     }
                     return $buts;
                 }),
@@ -78,6 +87,24 @@ class ProductoController extends Controller
         $result = datatables::simple($_POST, $table, $primaryKey, $columns);
         echo json_encode($result);
 
+
+    }
+
+    public function actionEstadoproducto()
+    {
+
+        $idproducto = $_POST['producto'];
+        $pdtestdo = $_POST['estado_producto'];
+        $data = Producto::findOne($idproducto);
+        $data->est_producto = $pdtestdo;
+        $data->update();
+    }
+
+    public function actionObtenerproducto()
+    {
+        $idproducto = $_POST['idproducto'];
+        $data = Producto::findOne($idproducto);
+        echo json_encode($data->attributes);
 
     }
 }
