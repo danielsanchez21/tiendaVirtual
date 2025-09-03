@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\helpers\datatables;
 use yii\web\Controller;
 use yii\web\Response;
 use app\models\Producto;
+require_once(\Yii::getAlias('@app/components/SSP.php'));
 
 class ProductoController extends Controller
 {
@@ -27,7 +29,7 @@ class ProductoController extends Controller
         $producto->save();
 
         \Yii::$app->response->format = Response::FORMAT_JSON;
-        return ['message' => 'Producto creado correctamente'];
+        return ['success'=>true,'message' => 'Producto creado correctamente'];
     }
 
     public function actionListarproductos()
@@ -35,5 +37,47 @@ class ProductoController extends Controller
        $lista = Producto::find()->all();
         \Yii::$app->response->format = Response::FORMAT_JSON;
         return $lista;
+    }
+    public function actionListaproductos()
+    {
+        $columns = array(
+            array('db' => 'id_Producto', 'dt' => 0),
+            array('db' => 'nombre', 'dt' => 1),
+            array('db' => 'stock', 'dt' => 2),
+            array('db' => 'precio_costo', 'dt' => 3),
+            array('db' => 'precio_costo', 'dt' => 4),
+            array('db' => 'id_Producto', 'dt' => 5,
+                'formatter' => function ($d, $row) {
+                    $buts = '<button type="button" id="editar_plan_' . $row['id_Producto'] . '" 
+                    title="editar" data-toggle="modal" data-target="#modal-actualizar"
+                    class="mfb-component__button--child tooltipedit bg-blue waves waves-effect"
+                    data-id="' . $row['id_Producto'] . '"></button>';
+
+                    if ($d == 1) {
+                        $buts .= "<button id='estado_desactivar_plan_" . $row['id_Producto'] . "' 
+                        data-id='" . $row['id_Producto'] . "' data-estado='0' 
+                        class='mfb-component__button--child bg-green waves waves-effect' 
+                        title='Estado'>
+                        </button>";
+                    } else {
+                        $buts .= "<button id='estado_activar_plan_" . $row['id_Producto'] . "' 
+                        data-id='" . $row['id_Producto'] . "' data-estado='1' 
+                        class='mfb-component__button--child bg-red waves waves-effect' 
+                        title='Estado'>
+                        </button>";
+                    }
+                    return $buts;
+                }),
+
+        );
+        //Indice
+        $primaryKey = "id_Producto";
+        //Tabla
+        $table = "producto";
+
+        $result = datatables::simple($_POST, $table, $primaryKey, $columns);
+        echo json_encode($result);
+
+
     }
 }
