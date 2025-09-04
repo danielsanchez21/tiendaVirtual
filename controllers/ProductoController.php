@@ -56,7 +56,7 @@ class ProductoController extends Controller
                     title="Editar" data-bs-toggle="modal" data-bs-target="#modalProducto"
                     class="btn btn-sm btn-primary"
                     data-id="' . $row['id_Producto'] . '">
-                    Editar
+                   <i class="fa-sharp fa-regular fa-pen-to-square" style="color: #74C0FC;"></i>
                  </button> ';
 
                     // Botón Activar/Desactivar
@@ -65,14 +65,14 @@ class ProductoController extends Controller
                         data-id="' . $row['id_Producto'] . '" data-estado="0" 
                         class="btn btn-sm btn-success"
                         title="Desactivar">
-                        Desactivar
+                          <i class="fa-solid fa-check"></i>                       
                       </button>';
                     } else {
                         $buts .= '<button id="estado_activar_pdt_' . $row['id_Producto'] . '" 
                         data-id="' . $row['id_Producto'] . '" data-estado="1" 
                         class="btn btn-sm btn-danger"
                         title="Activar">
-                        Activar
+                     <i class="fa-solid fa-xmark"></i>
                       </button>';
                     }
                     return $buts;
