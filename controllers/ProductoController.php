@@ -15,7 +15,9 @@ class ProductoController extends Controller
     public function actionCrearproducto()
     {
         $id =filter_input(INPUT_POST, 'pdt_id', FILTER_SANITIZE_NUMBER_INT);
+
         $producto = empty($id) ? new Producto() : Producto::findOne($id);
+
         $producto->nombre =filter_input(INPUT_POST, 'nombreproducto', FILTER_SANITIZE_STRING);
         $producto->descrip_producto = filter_input(INPUT_POST, 'descripcion', FILTER_SANITIZE_STRING);
         $producto->stock = filter_input(INPUT_POST, 'existencias', FILTER_SANITIZE_NUMBER_INT);;
