@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #f4f6f9;
+        }
+
+        /* -------- NAV LATERAL -------- */
+        aside {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 100vh;
+            background-color: #2c3e50;
+            color: white;
+            padding-top: 20px;
+        }
+
+        aside .logo {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        aside ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        aside ul li a {
+            display: block;
+            padding: 12px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        aside ul li a:hover {
+            background-color: #34495e;
+        }
+
+        /* -------- NAV SUPERIOR -------- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 200px; /* respeta la barra lateral */
+            right: 0; /* asegura que no se desborde */
+            height: 60px;
+            background-color: #1abc9c;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        header .title {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* -------- CONTENIDO PRINCIPAL -------- */
+        main {
+            margin-left: 200px;   /* espacio para sidebar */
+            margin-top: 60px;     /* espacio para header */
+            padding: 20px;
+            background: #fff;
+            min-height: calc(100vh - 60px);
+            box-sizing: border-box;
+        }
+
+        iframe {
+            width: 100%;
+            min-height: 80vh;
+            border: none;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+<!-- BARRA LATERAL -->
+<aside>
+    <div class="logo" href="index.htm">LOGO</div>
+    <ul>
+        <li><a href="index.html">Store History</a></li>
+        <li><a href="html/views/pruebaProducto.html" target="contentFrame">Producto</a></li>
+        <li><a href="html/views/categoria.html" target="contentFrame">Categoria</a></li>
+        <li><a href="html/views/rol.html" target="contentFrame">Rol</a></li>
+        <li><a href="html/views/persona.html" target="contentFrame">Clientes</a></li>
+        <li><a href="html/views/usuario.html" target="contentFrame">Usuarios</a></li>
+    </ul>
+</aside>
+
+<!-- BARRA SUPERIOR -->
+<header>
+    <div class="title">Panel de Administración</div>
+    <nav>
+        <a href="#">carrito</a>
+        <a href="#">Login</a>
+    </nav>
+</header>
+
+<!-- CONTENIDO -->
+<main>
+    <iframe name="contentFrame" id="contentFrame" src=""></iframe>
+</main>
+</body>
+</html>
