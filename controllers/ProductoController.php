@@ -14,16 +14,40 @@ class ProductoController extends Controller
 
     public function actionCrearproducto()
     {
-        $id =filter_input(INPUT_POST, 'pdt_id', FILTER_SANITIZE_NUMBER_INT);
-
+        $id = filter_input(INPUT_POST, 'pdt_id', FILTER_SANITIZE_NUMBER_INT);
         $producto = empty($id) ? new Producto() : Producto::findOne($id);
 
-        $producto->nombre =filter_input(INPUT_POST, 'nombreproducto', FILTER_SANITIZE_STRING);
+        $producto->nombre = filter_input(INPUT_POST, 'nombreproducto', FILTER_SANITIZE_STRING);
         $producto->descrip_producto = filter_input(INPUT_POST, 'descripcion', FILTER_SANITIZE_STRING);
-        $producto->stock = filter_input(INPUT_POST, 'existencias', FILTER_SANITIZE_NUMBER_INT);;
-        $producto->precio_costo = filter_input(INPUT_POST, 'pdtcosto', FILTER_SANITIZE_NUMBER_INT);;
-        $producto->precio_venta = filter_input(INPUT_POST, 'pdtventa', FILTER_SANITIZE_NUMBER_INT);;
-        $producto->fk_categoria = filter_input(INPUT_POST, 'categoria', FILTER_SANITIZE_NUMBER_INT);;
+        $producto->stock = filter_input(INPUT_POST, 'existencias', FILTER_SANITIZE_NUMBER_INT);
+        $producto->precio_costo = filter_input(INPUT_POST, 'pdtcosto', FILTER_SANITIZE_NUMBER_INT);
+        $producto->precio_venta = filter_input(INPUT_POST, 'pdtventa', FILTER_SANITIZE_NUMBER_INT);
+        $producto->fk_categoria = filter_input(INPUT_POST, 'categoria', FILTER_SANITIZE_NUMBER_INT);
+
+        //  Manejo de la imagen
+        if (isset($_FILES['filePdt']) && $_FILES['filePdt']['error'] === UPLOAD_ERR_OK) {
+            $tmpName = $_FILES['filePdt']['tmp_name'];
+            $fileName = basename($_FILES['filePdt']['name']);
+            $uploadDir = \Yii::getAlias('@webroot/uploads/productos/'); // ruta física en disco
+            $uploadUrl = \Yii::getAlias('@web/uploads/productos/');     // ruta pública accesible desde el navegador
+
+
+            // crear carpeta si no existe
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            // generar un nombre único para evitar conflictos
+            $newFileName = uniqid() . '_' . $fileName;
+            $filePath = $uploadDir . $newFileName;
+
+            if (move_uploaded_file($tmpName, $filePath)) {
+                // guardamos solo la ruta accesible públicamente
+                $producto->imagen = $uploadUrl . $newFileName;
+            } else {
+                throw new \Exception('Error al guardar la imagen');
+            }
+        }
 
         if (!$producto->validate()) {
             throw new \Exception('Error al crear producto');
@@ -32,8 +56,9 @@ class ProductoController extends Controller
         $producto->save();
 
         \Yii::$app->response->format = Response::FORMAT_JSON;
-        return ['success'=>true,'message' => 'Producto creado correctamente'];
+        return ['success' => true, 'message' => 'Producto creado correctamente'];
     }
+
 
     public function actionListarproductos()
     {

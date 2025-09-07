@@ -2,6 +2,7 @@ import {getBackEnd} from "./commons.js";
 
 export const crear_producto_url = getBackEnd() +"producto%2Fcrearproducto";
 export const tabla_producto_url = getBackEnd() +"producto%2Flistaproductos";
+export const listar_producto_url = getBackEnd() +"producto%2Flistarproductos";
 export const estado_producto_url = getBackEnd() +"producto%2Festadoproducto";
 export const obtener_producto_url = getBackEnd() +"producto%2Fobtenerproducto";
 export const listar_categoria_url = getBackEnd() +"categoria%2Flistarcategorias";
@@ -20,3 +21,4 @@ export const obtener_categoria_url =getBackEnd() +"categoria%2Fobtenercategoria"
 export const  crear_factura_url = getBackEnd() +"factura%2Fcrearfactura"
 export const listar_persona_url = getBackEnd() +"persona%2Flistarpersonas";
 export const listar_usuario_url = getBackEnd() +"usuario%2Flistarusuario";
+export const generar_factura_url = getBackEnd() +"factura%2Fcrearfactura";

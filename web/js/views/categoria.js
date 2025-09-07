@@ -59,7 +59,7 @@ function crearRegistrocategoria() {
         cache: false,
         processData: false,
         success: function (data) {
-            console.log("Respuesta backend:", data);
+
             if(data.success){
                 let modal = bootstrap.Modal.getInstance(document.getElementById('modalcategoria'));
                 modal.hide();

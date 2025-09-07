@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
+
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+
     <style>
         body {
             font-family: sans-serif;
@@ -96,14 +94,21 @@
             border: none;
             background: #fff;
         }
+        .badge {
+            display: inline-block;
+            background: #e74c3c;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            margin-left: 6px;
+        }
     </style>
-</head>
-<body>
-<!-- BARRA LATERAL -->
+
 <aside>
     <div class="logo" href="index.htm">LOGO</div>
     <ul>
-        <li><a href="index.html">Store History</a></li>
+        <li><a href="html/views/productos.html" target="contentFrame">Tienda</a></li>
         <li><a href="html/views/pruebaProducto.html" target="contentFrame">Producto</a></li>
         <li><a href="html/views/categoria.html" target="contentFrame">Categoria</a></li>
         <li><a href="html/views/rol.html" target="contentFrame">Rol</a></li>
@@ -116,14 +121,16 @@
 <header>
     <div class="title">Panel de Administración</div>
     <nav>
-        <a href="#">carrito</a>
-        <a href="#">Login</a>
+        <a href="html/views/carrito.html" target="contentFrame">Carrito <span id="cartCount" class="badge">0</span></a>
+        <a href="html/views/login.html" target="contentFrame">Login</a>
     </nav>
 </header>
 
 <!-- CONTENIDO -->
 <main>
-    <iframe name="contentFrame" id="contentFrame" src=""></iframe>
+    <iframe name="contentFrame" id="contentFrame" src="html/views/productos.html"></iframe>
 </main>
-</body>
-</html>
+<script src="js/views/cart.js"></script>
+<script>
+    if (typeof initCartBadge === 'function') { initCartBadge('cartCount'); }
+</script>
