@@ -1,14 +1,21 @@
-import {crear_persona_url, listar_documento_url, tabla_producto_url} from "../const.js";
+import {
+    crear_persona_url,
+    listar_documento_url, obtener_persona_url,
+    obtener_producto_url,
+    tabla_persona_url,
+    tabla_producto_url
+} from "../const.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     $('#lista_persona').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: tabla_producto_url, // 👈 tu endpoint PHP
+            url: tabla_persona_url,
             type: 'POST'
         },
         columns: [
+            {'searchable': true, className: "text-left"},
             {'searchable': true, className: "text-left"},
             {'searchable': true, className: "text-left"},
             {'searchable': true, className: "text-left"},
@@ -28,6 +35,11 @@ document.addEventListener("DOMContentLoaded", () => {
         crearRegistroCliente();
     });
     obtenerDocumento();
+    $(document).on('click', '[id^="editar_persona_"]', function(event) {
+        event.preventDefault();
+        const planId = $(this).data('id');
+        editarProducto(planId);
+    });
 });
 
 function crearRegistroCliente() {
@@ -45,8 +57,11 @@ function crearRegistroCliente() {
         success: function (data) {
             console.log("Respuesta backend:", data);
             if(data.success){
-                alert("Persona creado con éxito ✅");
+                alert("Persona creado con éxito ");
+                $('#lista_persona').DataTable().ajax.reload();
                 window.$('#persona_form')[0].reset();
+                let modal = bootstrap.Modal.getInstance(document.getElementById('modalclientes'));
+                modal.hide();
             } else {
                 alert("Error: " + data.message);
             }
@@ -73,4 +88,35 @@ function obtenerDocumento(){
         console.error(error);
         alert("Error consultar las listas");
     });
+}
+function editarProducto(id_persona) {
+
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: obtener_persona_url,
+        data: {idpersona: id_persona},
+        cache: false,
+        success: function (data) {
+            setearIdProducto(data.id_persona);
+            cargarDatosActividad(data);
+            $(':input, select').removeClass('error');
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+        }
+    });
+}
+
+function setearIdProducto(producto) {
+    $('input[name="id_persona"][type="hidden"]').val(producto);
+}
+function cargarDatosActividad(data) {
+    $('#persona-nombre').val(data['nombre']).trigger('change');
+    $('#persona-apellido').val(data['apellido']).trigger('change');
+    $('#tipo_documento').val(data['id_documento']).trigger('change');
+    $('#numero_documento').val(data['num_documento']).trigger('change');
+    $('#persona-telefono').val(data['telefono']).trigger('change');
+    $('#persona-direccion').val(data['direccion']).trigger('change');
+    $('#persona-genero').val(data['genero']).trigger('change');
 }
