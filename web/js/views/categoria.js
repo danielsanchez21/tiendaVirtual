@@ -1,9 +1,8 @@
 import {
     crear_categoria_url,
     estado_categoria_url,
-    estado_producto_url, obtener_categoria_url,
-    obtener_producto_url,
-    tabla_categoria_url
+    obtener_categoria_url,
+    tabla_categoria_url,
 } from "../const.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -19,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
             {'searchable': true, className: "text-left"},
             {'searchable': true, className: "text-left"},
             {'searchable': true, className: "text-left"},
-
             {'searchable': false, className: "text-left", "sortable": false}
         ],
         language: {
@@ -61,10 +59,13 @@ function crearRegistrocategoria() {
         cache: false,
         processData: false,
         success: function (data) {
-            console.log("Respuesta backend:", data);
+
             if(data.success){
+                let modal = bootstrap.Modal.getInstance(document.getElementById('modalcategoria'));
+                modal.hide();
                 alert(" creado con éxito ✅");
                 window.$('#categoria_form')[0].reset();
+                $('#lista_categoria').DataTable().ajax.reload();
             } else {
                 alert("Error: " + data.message);
             }

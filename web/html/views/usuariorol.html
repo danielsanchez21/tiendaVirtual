@@ -1,5 +1,5 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="module" src="/tiendaVirtual/web/js/views/documento.js"></script>
+<script type="module" src="/tiendaVirtual/web/js/views/usuariorol.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <meta charset="UTF-8">
@@ -14,30 +14,29 @@
 <div class="container mt-4">
     <div class="card shadow">
         <div class="card-body">
-            <h1 class="text-center mb-4">Documento</h1>
+            <h1 class="text-center mb-4">Usuario - Rol</h1>
 
-            <!-- Botón para abrir modal -->
             <div class="mb-3 text-end">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modaldocumento">
-                    Crear Documento
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalusuariorol">
+                    Asignar Rol
                 </button>
             </div>
 
-            <!-- Tabla DataTable -->
-            <table id="lista_documento" class="display table table-striped" style="width:100%">
+            <table id="lista_usuariorol" class="display table table-striped" style="width:100%">
                 <thead>
                 <tr>
                     <th>#</th>
                     <th>Nombre</th>
-                    <th>abreviatura</th>
+                    <th>Rol</th>
                     <th>Acciones</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
+                <tr>
                     <th>#</th>
                     <th>Nombre</th>
-                    <th>abreviatura</th>
+                    <th>Rol</th>
                     <th>Acciones</th>
                 </tr>
                 </tfoot>
@@ -46,42 +45,43 @@
         </div>
     </div>
 </div>
-<!-- Modal Crear Documento -->
-<div class="modal fade" id="modaldocumento" tabindex="-1" aria-labelledby="modaldocumentoLabel" aria-hidden="true">
+
+<!-- Modal -->
+<div class="modal fade" id="modalusuariorol" tabindex="-1"aria-labelledby="modalusuariorolLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="modaldocumentoLabel">Crear Documento</h5>
+                <h5 class="modal-title" id="modalusuariorolLabel">Asignar Rol a Usuario</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
 
             <div class="modal-body">
-                <form id="form_doc" class="row g-3">
-                    <input id="documento_id" name="documento_id" type="hidden">
+                <form id="usuariorol_form" class="row g-3">
+                    <input id="id_user_rol" name="id_user_rol" type="hidden">
 
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Nombre Documento <span style="color:red;">*</span></label>
-                            <input class="form-control" id="nombre_documento" name="nombre_documento"
-                                   type="text" required="required">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Abreviatura</label>
-                            <input class="form-control" id="abreviatura" name="abreviatura"
-                                   type="text">
-                        </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Nombre *</label>
+                        <select id="id_usuario" name="id_usuario" class="form-control">
+                            <option value="" selected>Seleccione</option>
+                            <!-- Aquí llenas dinámicamente con AJAX si quieres -->
+                        </select>
+                    </div>
 
-
+                    <div class="col-md-6">
+                        <label class="form-label">Rol *</label>
+                        <select id="id_rol" name="id_rol" class="form-control">
+                            <option value="" selected>Seleccione</option>
+                            <!-- Aquí llenas dinámicamente con AJAX si quieres -->
+                        </select>
                     </div>
                 </form>
             </div>
 
             <div class="modal-footer">
-                <button type="button" id="guardar_doc" class="btn btn-primary">Guardar</button>
+                <button type="button" id="guardar_usuariorol" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
-
         </div>
     </div>
 </div>

@@ -6,6 +6,7 @@ import {
     tabla_producto_url
 } from "../const.js";
 
+
 document.addEventListener("DOMContentLoaded", () => {
     $('#lista_productos').DataTable({
         processing: true,
@@ -120,9 +121,9 @@ function estadoProducto(id_producto, estado) {
         success: response => {
             $('#lista_productos').DataTable().ajax.reload();
             if (id_producto === 1) {
-                alert("Activo", "COMPLETADO", opts);
+                alert("Activo", "COMPLETADO");
             } else {
-                alert("Inactivo", "COMPLETADO", opts);
+                alert("Inactivo", "COMPLETADO");
             }
         }
     });
