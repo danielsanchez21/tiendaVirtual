@@ -2,7 +2,7 @@ import {
     crear_producto_url,
     crear_rol_url,
     estado_producto_url,
-    estado_rol_url, obtener_producto_url, Obtener_rol_url,
+    estado_rol_url, get_rol_url, obtener_producto_url, Obtener_rol_url,
     tabla_producto_url,
     tabla_rol_url
 } from "../const.js";
@@ -100,7 +100,7 @@ function editarRol(id_rol) {
     $.ajax({
         type: 'POST',
         dataType: 'json',
-        url: Obtener_rol_url,
+        url: get_rol_url,
         data: {idrol: id_rol},
         cache: false,
         success: function (data) {

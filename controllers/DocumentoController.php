@@ -5,14 +5,15 @@ use Yii;
 use yii\web\Controller;
 use app\models\Documento;
 use yii\web\Response;
-
+require_once(\Yii::getAlias('@app/components/SSP.php'));
 class DocumentoController extends Controller {
 
     public $enableCsrfValidation = false;
     public function actionCreardocumento() {
-        $documento = new Documento();
-        $documento->nombre = filter_input(INPUT_POST,"rol-nombre", FILTER_SANITIZE_STRING);
-        $documento->abreviatura = filter_input(INPUT_POST,"documento-abreviatura", FILTER_SANITIZE_STRING);
+        $id = filter_input(INPUT_POST,'documento_id',FILTER_SANITIZE_NUMBER_INT);
+        $documento =empty($id)? new Documento():Documento::findOne($id);
+        $documento->nombre = filter_input(INPUT_POST,"nombre_documento", FILTER_SANITIZE_STRING);
+        $documento->abreviatura = filter_input(INPUT_POST,"abreviatura", FILTER_SANITIZE_STRING);
 
         if (!$documento->validate()) {
             throw new Exception('Error al crear documento');
@@ -39,32 +40,28 @@ class DocumentoController extends Controller {
                 'dt' => 3,
                 'formatter' => function ($d, $row) {
                     // Botón Editar
-                    $buts = '<button type="button" 
-                            class="btn btn-sm btn-primary editar-documento"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#modalDocumento"
-                            data-id="' . $row['id_documento'] . '"
-                            title="Editar">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                         </button> ';
+                    $buts = '<button type="button" id="editar_plan_' . $row['id_documento'] . '" 
+                    title="Editar" data-bs-toggle="modal" data-bs-target="#modaldocumento"
+                    class="btn btn-sm btn-primary"
+                    data-id="' . $row['id_documento'] . '">
+                   <i class="fa-sharp fa-regular fa-pen-to-square" style="color: #74C0FC;"></i>
+                 </button> ';
 
                     // Botón Activar / Desactivar
                     if ((int)$d === 1) {
-                        $buts .= '<button 
-                                class="btn btn-sm btn-success cambiar-estado-documento"
-                                data-id="' . $row['id_documento'] . '" 
-                                data-estado="0" 
-                                title="Desactivar">
-                                <i class="fa-solid fa-check"></i>
-                              </button>';
+                        $buts .= '<button id="estado_desactivar_doc_' . $row['id_documento'] . '" 
+                        data-id="' . $row['id_documento'] . '" data-estado="0" 
+                        class="btn btn-sm btn-success"
+                        title="Desactivar">
+                          <i class="fa-solid fa-check"></i>                       
+                      </button>';
                     } else {
-                        $buts .= '<button 
-                                class="btn btn-sm btn-danger cambiar-estado-documento"
-                                data-id="' . $row['id_documento'] . '" 
-                                data-estado="1" 
-                                title="Activar">
-                                <i class="fa-solid fa-xmark"></i>
-                              </button>';
+                        $buts .= '<button id="estado_activar_doc_' . $row['id_documento'] . '" 
+                        data-id="' . $row['id_documento'] . '" data-estado="1" 
+                        class="btn btn-sm btn-danger"
+                        title="Activar">
+                     <i class="fa-solid fa-xmark"></i>
+                      </button>';
                     }
                     return $buts;
                 }
@@ -82,5 +79,20 @@ class DocumentoController extends Controller {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $result;
     }
+ public function actionEstado()
+ {
+     $id = $_POST['documento_id'];
+     $estado = $_POST['estado_documento'];
+     $data = Documento::findOne($id);
+     $data->estado = $estado;
+     $data->update();
+ }
+
+    public function actionObtenerdocumento() {
+        $id =$_POST['id_documento'];
+        $data =Documento::findOne($id);
+        echo json_encode($data->attributes);
+    }
+
 
 }

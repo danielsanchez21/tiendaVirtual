@@ -1,4 +1,4 @@
-import {crear_factura_url, listar_persona_url, listar_usuario_url} from "../const.js";
+import {crear_factura_url, listar_persona_url} from "../const.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     window.$('#guardar_factura').on('click', function (event) {

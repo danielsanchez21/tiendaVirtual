@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 use app\helpers\datatables;
+use Exception;
 use yii\web\Controller;
 use app\models\Rol;
 use yii\web\Response;
