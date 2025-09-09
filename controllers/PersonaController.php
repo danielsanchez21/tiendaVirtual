@@ -4,6 +4,7 @@ require_once(\Yii::getAlias('@app/components/SSP.php'));
 
 use app\helpers\datatables;
 use app\models\Documento;
+use Yii;
 use yii\web\Controller;
 use app\models\Persona;
 use yii\web\Response;
@@ -35,48 +36,45 @@ class PersonaController extends Controller {
         return $lista;
     }
 
-    public function actionListapersonas() {
+    public function actionListapersonas()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
         $columns = array(
             array('db' => 'id_persona', 'dt' => 0),
             array('db' => 'id_persona', 'dt' => 1,
                 'formatter' => function ($d, $row) {
-                $info= Persona::find()->where(['id_persona'=>$d])->one();
-                return !empty($info)? $info->nombre." ".$info->apellido :'';
+                    $info = Persona::find()->where(['id_persona' => $d])->one();
+                    return !empty($info) ? $info->nombre . " " . $info->apellido : '';
                 }
-                ),
+            ),
             array('db' => 'id_documento', 'dt' => 2,
-            'formatter'=> function ($d,$row) {
-                $doc=Documento::findOne($d);
-                return empty($doc) ? '' :$doc->nombre;
-            }
+                'formatter' => function ($d, $row) {
+                    $doc = Documento::findOne($d);
+                    return empty($doc) ? '' : $doc->nombre;
+                }
             ),
             array('db' => 'num_documento', 'dt' => 3),
             array('db' => 'direccion', 'dt' => 4),
             array('db' => 'telefono', 'dt' => 5),
-            array(
-                'db' => 'id_persona',
-                'dt' => 6,
+            array('db' => 'id_persona', 'dt' => 6,
                 'formatter' => function ($d, $row) {
-                    // Botón Editar
-                    $buts = '<button type="button" id="editar_persona_' . $row['id_persona'] . '" 
+                    return '<button type="button" id="editar_persona_' . $row['id_persona'] . '" 
                     title="Editar" data-bs-toggle="modal" data-bs-target="#modalclientes"
                     class="btn btn-sm btn-primary"
                     data-id="' . $row['id_persona'] . '">
                    <i class="fa-sharp fa-regular fa-pen-to-square" style="color: #74C0FC;"></i>
-                 </button> ';
-
-
-                    return $buts;
-                }),
-
+                 </button>';
+                }
+            )
         );
-        //Indice
+
         $primaryKey = "id_persona";
-        //Tabla
         $table = "persona";
 
         $result = datatables::simple($_POST, $table, $primaryKey, $columns);
-        echo json_encode($result);
+
+        return $result;
     }
 
     public function actionObtenerpersona()

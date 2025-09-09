@@ -28,6 +28,7 @@ class ProductoController extends Controller
         if (isset($_FILES['filePdt']) && $_FILES['filePdt']['error'] === UPLOAD_ERR_OK) {
             $tmpName = $_FILES['filePdt']['tmp_name'];
             $fileName = basename($_FILES['filePdt']['name']);
+            // emulacion de s3, mogo, blostorage
             $uploadDir = \Yii::getAlias('@webroot/uploads/productos/'); // ruta física en disco
             $uploadUrl = \Yii::getAlias('@web/uploads/productos/');     // ruta pública accesible desde el navegador
 
