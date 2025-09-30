@@ -1,0 +1,313 @@
+
+    <meta charset="UTF-8">
+
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #f4f6f9;
+        }
+
+        /* -------- NAV LATERAL -------- */
+        aside {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 100vh;
+            background-color: #2c3e50;
+            color: white;
+            padding-top: 20px;
+        }
+
+        aside .logo {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        aside ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        aside ul li a {
+            display: block;
+            padding: 12px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        aside ul li a:hover {
+            background-color: #34495e;
+        }
+
+        /* -------- NAV SUPERIOR -------- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 200px; /* respeta la barra lateral */
+            right: 0; /* asegura que no se desborde */
+            height: 60px;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        header .title {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* -------- CONTENIDO PRINCIPAL -------- */
+        main {
+            margin-left: 200px;   /* espacio para sidebar */
+            margin-top: 60px;     /* espacio para header */
+            padding: 20px;
+            background: #fff;
+            min-height: calc(100vh - 60px);
+            box-sizing: border-box;
+        }
+
+        iframe {
+            width: 100%;
+            min-height: 80vh;
+            border: none;
+            background: #fff;
+        }
+        .badge {
+            display: inline-block;
+            background: #e74c3c;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            margin-left: 6px;
+        }
+        .auth-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            background: #7f8c8d;
+            color: #ecf0f1;
+            margin-left: 12px;
+        }
+        .auth-status.authenticated {
+            background: #2ecc71;
+            color: #fff;
+        }
+        header nav a#authAction {
+            margin-left: 12px;
+        }
+    </style>
+
+<aside>
+    <div class="logo" href="index.htm">
+        <img src="/tiendaVirtual/web/uploads/logo/logo2.png" alt="logo.jpg" width="180px" height="100px">
+    </div>
+    <ul>
+        <!-- Solo se muestra a visitantes y usuarios no admin -->
+        <li data-role="public"><a href="html/views/productos.html" target="contentFrame">Tienda</a></li>
+        <!-- Opciones visibles solo para administradores autenticados -->
+        <li data-role="admin"><a href="html/views/pruebaProducto.html" target="contentFrame">Producto</a></li>
+        <li data-role="admin"><a href="html/views/categoria.html" target="contentFrame">Categoria</a></li>
+        <li data-role="admin"><a href="html/views/rol.html" target="contentFrame">Rol</a></li>
+        <li data-role="admin"><a href="html/views/persona.html" target="contentFrame">Clientes</a></li>
+        <li data-role="admin"><a href="html/views/usuario.html" target="contentFrame">Usuarios</a></li>
+        <li data-role="admin"><a href="html/views/documento.html" target="contentFrame">Documento</a></li>
+        <li data-role="admin"><a href="html/views/usuariorol.html" target="contentFrame">Usuario Rol</a></li>
+    </ul>
+</aside>
+
+<!-- BARRA SUPERIOR -->
+<header>
+    <div class="title">Panel de Administración</div>
+    <nav>
+        <a href="html/views/carrito.html" target="contentFrame">Carrito <span id="cartCount" class="badge">0</span></a>
+        <span id="authStatus" class="auth-status">Invitado</span>
+        <a id="authAction" href="html/views/login.html" target="contentFrame">Login</a>
+    </nav>
+</header>
+
+<!-- CONTENIDO -->
+<main>
+    <iframe name="contentFrame" id="contentFrame" src="html/views/productos.html"></iframe>
+</main>
+<script src="js/views/cart.js"></script>
+<script>
+    // Inicializa badge del carrito si existe
+    if (typeof initCartBadge === 'function') { initCartBadge('cartCount'); }
+
+    // Exponer y ejecutar configuración según autenticación/rol
+    (function () {
+        function normalizeAuth() {
+            // 1) Preferir AUTH en sessionStorage (definido por login.js)
+            try {
+                var rawAuth = sessionStorage.getItem('AUTH');
+                if (rawAuth) {
+                    var obj = JSON.parse(rawAuth);
+                    var roleName = '';
+                    if (obj && obj.user && typeof obj.user.role_name === 'string') {
+                        roleName = obj.user.role_name;
+                    } else if (obj && (obj.role || obj.rol)) {
+                        roleName = obj.role || obj.rol;
+                    }
+                    return {
+                        authenticated: !!(obj && (obj.token || obj.authenticated || obj.isAuthenticated)),
+                        is_admin: !!(obj && obj.is_admin),
+                        role: (roleName || '').toString().toLowerCase()
+                    };
+                }
+            } catch (e) { /* noop */ }
+
+            // 2) Fallback: authUser en storage
+            try {
+                var raw = localStorage.getItem('authUser') || sessionStorage.getItem('authUser');
+                if (raw) {
+                    var o = JSON.parse(raw);
+                    var role2 = (o.role || o.rol || '').toString().toLowerCase();
+                    return {
+                        authenticated: !!(o.authenticated || o.isAuthenticated || o.token),
+                        is_admin: role2 === 'admin',
+                        role: role2
+                    };
+                }
+            } catch (e2) { /* noop */ }
+
+            // 3) Fallback: claves sueltas
+            var role = (localStorage.getItem('userRole') || sessionStorage.getItem('userRole') || '').toString().toLowerCase();
+            var isAuth = (localStorage.getItem('isAuthenticated') === 'true') ||
+                         (sessionStorage.getItem('isAuthenticated') === 'true') ||
+                         !!localStorage.getItem('token') || !!sessionStorage.getItem('token');
+            return { authenticated: isAuth, is_admin: role === 'admin', role: role };
+        }
+
+        window.configureMenuByAuth = function () {
+            var auth = normalizeAuth();
+            var isAdmin = !!(auth.is_admin || (auth.authenticated && auth.role === 'admin'));
+
+            var adminItems = document.querySelectorAll('aside ul li[data-role="admin"]');
+            var publicItems = document.querySelectorAll('aside ul li[data-role="public"]');
+
+            var statusEl = document.getElementById('authStatus');
+            var actionEl = document.getElementById('authAction');
+
+            if (!isAdmin) {
+                // Visitantes y usuarios no admin: mostrar solo "Tienda"
+                adminItems.forEach(function (li) { li.style.display = 'none'; });
+                publicItems.forEach(function (li) { li.style.display = ''; });
+
+                // Asegurar que el iframe muestre la Tienda
+                var frame = document.getElementById('contentFrame');
+                if (frame && (!frame.src || frame.src.indexOf('html/views/productos.html') === -1)) {
+                    frame.src = 'html/views/productos.html';
+                }
+
+                // Bloquear clics a opciones admin por si se intenta acceder
+                var aside = document.querySelector('aside');
+                if (aside && !aside.__guardAdded) {
+                    aside.__guardAdded = true;
+                    aside.addEventListener('click', function (ev) {
+                        var link = ev.target.closest('a');
+                        if (!link) return;
+                        var li = link.closest('li');
+                        if (li && li.getAttribute('data-role') === 'admin') {
+                            ev.preventDefault();
+                            alert('Acceso restringido. Inicia sesión como administrador para ver esta sección.');
+                        }
+                    });
+                }
+
+                // Cambiar título para el modo público
+                var titleEl = document.querySelector('header .title');
+                if (titleEl) titleEl.textContent = 'Tienda';
+
+                // Estado visual no autenticado
+                if (statusEl) {
+                    statusEl.textContent = 'Invitado';
+                    statusEl.classList.remove('authenticated');
+                }
+                if (actionEl) {
+                    actionEl.textContent = 'Login';
+                    actionEl.href = 'html/views/login.html';
+                    actionEl.setAttribute('target', 'contentFrame');
+                    actionEl.dataset.action = 'login';
+                }
+            } else {
+                // Admin autenticado: mostrar admin y ocultar opción pública
+                publicItems.forEach(function (li) { li.style.display = 'none'; });
+                adminItems.forEach(function (li) { li.style.display = ''; });
+
+                var titleEl2 = document.querySelector('header .title');
+                if (titleEl2) titleEl2.textContent = 'Panel de Administración';
+
+                // Estado visual autenticado
+                var displayName = (auth && auth.user && auth.user.name) ? auth.user.name : 'Admin';
+                if (statusEl) {
+                    statusEl.textContent = 'Autenticado: ' + displayName;
+                    statusEl.classList.add('authenticated');
+                }
+                if (actionEl) {
+                    actionEl.textContent = 'Salir';
+                    actionEl.href = '#';
+                    actionEl.removeAttribute('target');
+                    actionEl.dataset.action = 'logout';
+                }
+            }
+
+            // Manejo de acción (Login/Salir), se agrega una sola vez
+            if (actionEl && !actionEl.__handlerAdded) {
+                actionEl.__handlerAdded = true;
+                actionEl.addEventListener('click', function (ev) {
+                    if (actionEl.dataset.action === 'logout') {
+                        ev.preventDefault();
+                        try { sessionStorage.removeItem('AUTH'); } catch (e) {}
+                        // Volver a vista pública
+                        var frame = document.getElementById('contentFrame');
+                        if (frame) frame.src = 'html/views/productos.html';
+                        window.configureMenuByAuth();
+                    }
+                });
+            }
+        };
+
+        // Ejecutar al cargar
+        window.configureMenuByAuth();
+
+        // Reconfigurar automáticamente cuando cambie AUTH
+        var lastSig = null;
+        function computeSig() {
+            var a = normalizeAuth();
+            return (a.authenticated ? '1' : '0') + '|' + (a.is_admin ? '1' : '0') + '|' + (a.role || '');
+        }
+        setInterval(function () {
+            try {
+                var s = computeSig();
+                if (s !== lastSig) {
+                    lastSig = s;
+                    window.configureMenuByAuth();
+                }
+            } catch (e) { /* noop */ }
+        }, 600);
+    })();
+</script>

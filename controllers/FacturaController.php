@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\FacturaHasProducto;
+use app\models\Producto;
+use Yii;
 use yii\web\Controller;
 use yii\web\Response;
 use app\models\Factura;
@@ -11,21 +14,59 @@ class FacturaController extends Controller
     public $enableCsrfValidation = false;
 
     // Crear factura
+
+
     public function actionCrearfactura()
     {
-        $factura = new Factura();
-        $factura->fecha_factura = date('Y-m-d H:i:s'); // Fecha actual
-        $factura->valor_factura = filter_input(INPUT_POST, "valor_factura", FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $factura->fk_persona = filter_input(INPUT_POST, "factura-fk_persona", FILTER_SANITIZE_NUMBER_INT);
-        if (!$factura->validate()) {
-            throw new \Exception('Error al crear factura');
+
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $data = Yii::$app->request->post('payload');
+        $data = json_decode($data, true);
+
+        $transaction = yii::$app->db->beginTransaction();
+        try {
+
+            $factura = new Factura();
+            $factura->fecha_factura = date('Y-m-d');
+            $factura->valor_factura = $data['total'];
+            $factura->fk_persona =2;
+            $factura->fk_usuario =1;
+            $factura->estado_factura='1';
+            if (!$factura->validate()) {
+                throw new \Exception('Error al crear factura');
+            }
+            $factura->save();
+
+            foreach ($data['items'] as $producto) {
+                $prod=producto::findOne($producto['product_id']);
+
+                $facturaProductos = new FacturaHasProducto();
+                $facturaProductos->id_factura = $factura->id_factura;
+                $facturaProductos->id_producto = $prod->id_Producto;
+                $facturaProductos->cantidad = $producto['qty'];
+                $facturaProductos->valor = $producto['qty']*$prod->precio_venta;
+                if(!$facturaProductos->validate()){
+                    throw new \Exception('Error al crear factura');
+                }
+                $facturaProductos->save();
+
+                // actualizacion del inventario
+                $prod->stock=$prod->stock-$producto['qty'];
+                $prod->update();
+
+
+            }
+            $transaction->commit();
+
+            return ['success' => true, 'message' => 'Factura creada correctamente'];
+
+        }catch (\Exception $e) {
+
+            $transaction->rollBack();
+            return ['success' => false, 'message' => $e->getMessage()];
         }
-
-        $factura->save();
-
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-        return ['message' => 'Factura creada correctamente'];
     }
+
 
     // Listar facturas
     public function actionListarfacturas()

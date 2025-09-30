@@ -13,7 +13,8 @@ class CategoriaController extends Controller
 
     public function actionCrearcategoria()
     {
-        $categoria = new Categoria();
+        $id =filter_input(INPUT_POST,"categoria_id", FILTER_SANITIZE_NUMBER_INT);
+        $categoria = empty($id)?new Categoria():Categoria::findOne($id);
         $categoria->nom_categoria = filter_input(INPUT_POST,"categoria-nom_categoria", FILTER_SANITIZE_STRING);
         $categoria->des_categoria = filter_input(INPUT_POST,"categoria-des_categoria", FILTER_SANITIZE_STRING);
         $categoria->abreviatura = filter_input(INPUT_POST,"categoria-abreviatura", FILTER_SANITIZE_STRING);
@@ -50,10 +51,10 @@ class CategoriaController extends Controller
                     class="btn btn-sm btn-primary"
                     data-id="' . $row['id_categoria'] . '">
                    <i class="fa-sharp fa-regular fa-pen-to-square" style="color: #74C0FC;"></i>
-                       </button> ';
+                 </button> ';
 
                     // Botón Activar/Desactivar
-                    if ($d === 1) {
+                    if ((int)$d === 1) {
                         $buts .= '<button id="estado_desactivar_categoria_' . $row['id_categoria'] . '" 
                         data-id="' . $row['id_categoria'] . '" data-estado="0" 
                         class="btn btn-sm btn-success"
@@ -65,22 +66,24 @@ class CategoriaController extends Controller
                         data-id="' . $row['id_categoria'] . '" data-estado="1" 
                         class="btn btn-sm btn-danger"
                         title="Activar">
-                     <i class="fa-solid fa-xmark"></i>
+                         <i class="fa-solid fa-xmark"></i>
                       </button>';
                     }
-                    return $buts;
-                }),
 
-
+                    return $buts; // 👈 se devuelve en UNA sola columna
+                }
+            )
         );
-        //Indice
+
         $primaryKey = "id_categoria";
-        //Tabla
         $table = "categoria";
 
         $result = datatables::simple($_POST, $table, $primaryKey, $columns);
-        echo json_encode($result);
+
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $result;
     }
+
     public function actionEstadocategoria()
     {
 

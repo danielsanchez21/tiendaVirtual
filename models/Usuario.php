@@ -10,7 +10,7 @@ use Yii;
  * @property int $id_usuario
  * @property string|null $nombre
  * @property string|null $correo
- * @property string|null $contraseña
+ * @property string|null $contrasena
  *
  * @property Factura[] $facturas
  * @property UsuarioRol[] $usuarioRols
@@ -33,10 +33,10 @@ class Usuario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'correo', 'contraseña'], 'default', 'value' => null],
+            [['nombre', 'correo', 'contrasena'], 'default', 'value' => null],
             [['nombre'], 'string', 'max' => 50],
             [['correo'], 'string', 'max' => 100],
-            [['contraseña'], 'string', 'max' => 255],
+            [['contrasena'], 'string', 'max' => 255],
         ];
     }
 
@@ -49,7 +49,7 @@ class Usuario extends \yii\db\ActiveRecord
             'id_usuario' => 'Id Usuario',
             'nombre' => 'Nombre',
             'correo' => 'Correo',
-            'contraseña' => 'Contraseña',
+            'contrasena' => 'Contrasena',
         ];
     }
 
