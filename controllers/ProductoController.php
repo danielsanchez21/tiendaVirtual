@@ -113,7 +113,7 @@ class ProductoController extends Controller
         $table = "producto";
 
         $result = datatables::simple($_POST, $table, $primaryKey, $columns);
-        echo json_encode($result);
+        return $this->asJson($result);
 
 
     }
