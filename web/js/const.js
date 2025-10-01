@@ -28,6 +28,7 @@ export const tabla_categoria_url =getBackEnd() +"categoria%2Flistacategoria";
 export const estado_categoria_url =getBackEnd() +"categoria%2Festadocategoria";
 export const obtener_categoria_url =getBackEnd() +"categoria%2Fobtenercategoria";
 export const  crear_factura_url = getBackEnd() +"factura%2Fcrearfactura"
+export const  reporte_factura_url = getBackEnd() +"factura%2Freportefactura"
 export const listar_persona_url = getBackEnd() +"persona%2Flistarpersonas";
 export const listar_usuario_url = getBackEnd() +"usuario%2Flistarusuarios";
 export const generar_factura_url = getBackEnd() +"factura%2Fcrearfactura";

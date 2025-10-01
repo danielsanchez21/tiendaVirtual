@@ -65,6 +65,10 @@ function submitOrder() {
     }
     const formData = new FormData();
     formData.append("payload", JSON.stringify(payload));
+    const payloadString = formData.get("payload"); // devuelve el string JSON
+    let pay = JSON.parse(payloadString);
+    pay=pay.total * 100;
+    pay=500000;
     $.ajax({
         type: 'POST',
         url: generar_factura_url,
@@ -74,10 +78,22 @@ function submitOrder() {
         dataType: "json",
         success: function (data) {
             if (data.success) {
-                alert("Orden creada correctamente");
-                parent.clearCart();
-                render();
-                parent.document.querySelector("iframe[name='contentFrame']").src = "html/views/productos.html";
+                const checkout = new WidgetCheckout({
+                    currency: 'COP',
+                    amountInCents: pay,
+                    reference: 'ORDER-' + Date.now(),
+                    publicKey: 'pub_test_7eexiYY2dT1t3J2iWnUWK2qWKQPD1PEd',
+                    signature: {
+                        integrity: "test_integrity_q6028Zs4lzvijQhCBWk3UD4PUcTDNcml"
+                    }
+                });
+                checkout.open(function (result) {
+                    console.log("Resultado del pago:", result);
+                    parent.clearCart();
+                    render();
+                    parent.document.querySelector("iframe[name='contentFrame']").src = "html/views/productos.html";
+                });
+
             } else {
                 console.error("Respuesta backend:", data);
                 alert("No se pudo crear la orden.");

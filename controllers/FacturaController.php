@@ -2,13 +2,15 @@
 
 namespace app\controllers;
 
+use app\helpers\datatables;
 use app\models\FacturaHasProducto;
+use app\models\Persona;
 use app\models\Producto;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
 use app\models\Factura;
-
+require_once(\Yii::getAlias('@app/components/SSP.php'));
 class FacturaController extends Controller
 {
     public $enableCsrfValidation = false;
@@ -29,7 +31,7 @@ class FacturaController extends Controller
             $factura = new Factura();
             $factura->fecha_factura = date('Y-m-d');
             $factura->valor_factura = $data['total'];
-            $factura->fk_persona =2;
+            $factura->fk_persona =1;
             $factura->fk_usuario =1;
             $factura->estado_factura='1';
             if (!$factura->validate()) {
@@ -73,5 +75,34 @@ class FacturaController extends Controller
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
         return Factura::find()->all();
+    }
+
+    public function actionReportefactura()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $columns = array(
+            array('db' => 'id_factura', 'dt' => 0),
+            array('db' => 'fecha_factura', 'dt' => 1),
+            array('db' => 'fk_persona', 'dt' => 2,
+                'formatter' => function ($d, $row) {
+                    $info = Persona::find()->where(['id_persona' => $d])->one();
+                    return !empty($info) ? $info->nombre . " " . $info->apellido : '';
+                }
+            ),
+            array('db' => 'valor_factura', 'dt' => 3,
+                'formatter' => function ($d, $row) {
+                return '$' . number_format($d, 2, '.', ',');
+                }),
+
+
+        );
+
+        $primaryKey = "id_factura";
+        $table = "factura";
+
+        $result = datatables::simple($_POST, $table, $primaryKey, $columns);
+
+        return $result;
     }
 }
